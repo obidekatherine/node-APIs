@@ -1,14 +1,14 @@
 const express = require('express')
 const app = express()
-const tasks = require('./final/routes/tasks')
-const connectDB = require('./final/db/connect')
+const tasks = require('./main/routes/tasks')
+const connectDB = require('./main/db/connect')
 require('dotenv').config()
-const notFound = require('./final/middleware/not-found')
-const errorHandlerMiddleware = require('./final/middleware/error-handler')
+const notFound = require('./main/middleware/not-found')
+const errorHandlerMiddleware = require('./main/middleware/error-handler')
 
 
 //middleware
-app.use(express.static('./final/public'))
+app.use(express.static('./main/public'))
 app.use(express.json());
 
 //routes
