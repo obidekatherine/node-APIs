@@ -7,7 +7,7 @@ const getAllProductsStatic = async (req, res) => {
 }
 
 const getAllProducts = async (req, res) => {
-    const { featured, company, name, sort} = req.query
+    const { featured, company, name, sort, fields} = req.query
     const queryObject = {}
 
     if (featured) {
@@ -22,6 +22,8 @@ const getAllProducts = async (req, res) => {
         queryObject.name = { $regex: name, $options: 'i' }
     }
     let result = Product.find(queryObject)
+
+    //sorting products
     if(sort){
         const sortList = sort.split(',').join('')
         result = result.sort(sortList)
@@ -29,6 +31,11 @@ const getAllProducts = async (req, res) => {
     else{
         //sorting products based on when the products was created
         result = result.sort('creatAt')
+    }
+  //searching for products based on what you want to see
+    if(fields){
+        const fieldList = fields.split(',').join('')
+        result = result.select(fieldList)  
     }
     const products = await result
     res.status(200).json({ products, nbHits: products.length })
