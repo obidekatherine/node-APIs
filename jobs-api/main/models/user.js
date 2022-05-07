@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
+
 
 const UserSchema = new mongoose.Schema({
     name:{
@@ -16,12 +18,16 @@ const UserSchema = new mongoose.Schema({
           ],
         unique: true,  
     },
-    name:{
+    password:{
         type: String,
         required: [true, 'Please provide password'],
         minlength: 6,
-        maxlength: 12,
     },
 })
-
+// mongoose middleware for securing/hashing password usin bcryptj and salt
+UserSchema.pre('save', async function(){
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+    
+})
 module.exports = mongoose.model('User', UserSchema)
