@@ -5,6 +5,7 @@ const app = express();
 
 //connectDB
 const connectDB = require('./main/db/connect')
+const authenticateUser = require('./main/middleware/authentication')
 
 const authRouter = require('./main/routes/auth')
 const jobsRouter = require('./main/routes/jobs')
@@ -19,7 +20,7 @@ app.use(express.json());
 
 // routes
 app.use('/api/v1/auth', authRouter)
-app.use('/api/v1/jobs', jobsRouter)
+app.use('/api/v1/jobs', authenticateUser, jobsRouter)
 
 
 
